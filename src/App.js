@@ -185,10 +185,12 @@ const Payments = ({productDetails}) => {
     const shipping = 2.99;
     const tax = 10
   useEffect(()=>{
+  if(productDetails){
     const subTotal = productDetails.reduce((total,cur)=>{
       return (total.price*total.quantity)+(cur.price*cur.quantity)
     })
     setSubTotal(subTotal)
+  }
   })
 
   return (
