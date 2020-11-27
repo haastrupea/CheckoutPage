@@ -27,23 +27,22 @@ const App = () => {
   };
 
   const updateProductDetails = (price, quantity, productId) => {
-    // const {id, userId, date, products}
-    
-    setCartProducts((prevDetails) => {
-      const newDetails = prevDetails.filter(
-        (value) => {
-          
-        }
 
-      )
-      if (prevDetails.productId === productId) {
-        
-      }
-      
-    })
+        setCartProducts((prevDetails) => {
+          const newDetails = []
+            prevDetails.forEach((elm)=>{
+              if(elm.productId === productId){
+                newDetails.push({price,quantity,productId})
+              }else{
+                newDetails.push(elm)
+              }
+
+            })
+            return newDetails
+        })
   }
-
   const updateProduct = (quantity, price, productId) => {
+    updateProductDetails(quantity, price, productId);
 
     setCart(({id, userId, date, products}) => {
       const newProducts = [];
@@ -174,14 +173,24 @@ const App = () => {
           </div>
         )}
         <div className="row justify-content-center">
-          <Payments />
+          <Payments productDetails={cartProducts} />
         </div>
       </div>
     </div>
   );
 };
 
-const Payments = () => {
+const Payments = ({productDetails}) => {
+    const [subTotal,setSubTotal] = useState(0)
+    const shipping = 2.99;
+    const tax = 10
+  useEffect(()=>{
+    const subTotal = productDetails.reduce((total,curValue)=>{
+      return (total.price*total.quantity)+(cur.price*cur.quantity)
+    })
+    setSubTotal(subTotal)
+  })
+
   return (
     <div className="col-lg-12">
       <div className="card">
@@ -256,22 +265,22 @@ const Payments = () => {
           <div className="mt-2 col-lg-4">
             <div className="px-4 row d-flex justify-content-between">
               <p className="mb-1 text-left">Subtotal</p>
-              <h6 className="mb-1 text-right">$23.49</h6>
+              <h6 className="mb-1 text-right">${subTotal}</h6>
             </div>
             <div className="px-4 row d-flex justify-content-between">
               <p className="mb-1 text-left">Shipping</p>
-              <h6 className="mb-1 text-right">$2.99</h6>
+  <h6 className="mb-1 text-right">${shipping}</h6>
             </div>
             <div className="px-4 row d-flex justify-content-between" id="tax">
               <p className="mb-1 text-left">Total (tax included)</p>
-              <h6 className="mb-1 text-right">$26.48</h6>
+  <h6 className="mb-1 text-right">${subTotal+shipping+tax}</h6>
             </div>{" "}
             <button className="btn-block btn-blue" onClick={() => {}}>
               {" "}
               <span>
                 {" "}
                 <span id="checkout">Checkout</span>{" "}
-                <span id="check-amt">$26.48</span>{" "}
+  <span id="check-amt">${subTotal+shipping+tax}</span>{" "}
               </span>{" "}
             </button>
           </div>
