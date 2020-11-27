@@ -185,7 +185,7 @@ const Payments = ({productDetails}) => {
     const shipping = 2.99;
     const tax = 10
   useEffect(()=>{
-    const subTotal = productDetails.reduce((total,curValue)=>{
+    const subTotal = productDetails.reduce((total,cur)=>{
       return (total.price*total.quantity)+(cur.price*cur.quantity)
     })
     setSubTotal(subTotal)
@@ -320,10 +320,8 @@ const Products = ({ productId, qty, removeProduct, updateQuantity }) => {
 
   useEffect(() => {
     const newPrice = price * Quantity;
-    console.log(Quantity, "Quantity");
-    console.log(price, "Price");
-    console.log(newPrice, "New Price");
     setPriceTag(newPrice);
+    updateQuantity(Quantity,price, productId);
   }, [Quantity, price]);
 
   const decreaseQuantity = () => {
@@ -342,7 +340,7 @@ const Products = ({ productId, qty, removeProduct, updateQuantity }) => {
     removeProduct(productId);
   };
   const updateProduct = () => {
-    updateQuantity(Quantity, productId);
+    updateQuantity(Quantity,price, productId);
   };
 
   return (
